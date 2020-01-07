@@ -28,12 +28,12 @@ var start = function(send){
 						res.send('Nothing')
 				}
 			)
-			// tokens.findOne({token:req.query.id}, (err,doc) => {
-			// 	if (doc)
-			// 		res.send(doc)
-			// 	else
-			// 		res.send('NG')
-			// })
+			 tokens.findOne({token:req.query.id}, (err,doc) => {
+			 	if (doc)
+			 		res.send(doc)
+			 	else
+			 		res.send('NG')
+			 })
 		}else{
 			res.send('Sorry!Nothing happed')
 		}
@@ -42,9 +42,9 @@ var start = function(send){
 	app.get('/thook', (req, res) => {
 
 		route.log('Hook called', {query:req.query, header:req.headers}, send)
-		// route.log('Hook called', req, send)
+		 route.log('Hook called', req, send)
 		res.send(req.url.split('?').pop().split('&'))
-		//res.send(Object.keys(req.query).map(function(i){return i}))
+		res.send(Object.keys(req.query).map(function(i){return i}))
 
 	})
 

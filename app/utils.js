@@ -19,7 +19,7 @@ var utils = function (db){
           })
         })
 
-        //return doc.tz
+        return doc.tz
       },
       tzConvert : function(timeData, fromTz, toTz='UTC'){
         console.log(44444444, arguments)
@@ -42,10 +42,10 @@ var utils = function (db){
       sendHelp: function(send, bot){
         send({
           color: 3447003,
-          // author: {
-          //   name: client.user.username,
-          //   icon_url: client.user.avatarURL
-          // },
+           author: {
+             name: client.user.username,
+             icon_url: client.user.avatarURL
+           },
           title: "Help for TimeAlexa",
           url: "https://discordbots.org/bot/509269359231893516",
           description: "TimeAlexa will check people's text content and pick up text parts that **considerated a time** in: \r\n \
@@ -84,7 +84,7 @@ var utils = function (db){
           ],
           timestamp: new Date(),
           footer: {
-            // icon_url: client.user.avatarURL,
+             icon_url: client.user.avatarURL,
             text: "© TimeAlex"
           }
         })
@@ -92,10 +92,10 @@ var utils = function (db){
       sendHelpShort: function(send, bot){
         send({
           color: 3447003,
-          // author: {
-          //   name: client.user.username,
-          //   icon_url: client.user.avatarURL
-          // },
+           author: {
+             name: client.user.username,
+             icon_url: client.user.avatarURL
+           },
           title: "Help for TimeAlexa",
           url: "https://discordbots.org/bot/509269359231893516",
           description: "TimeAlexa translate time text in context like **2pm** **12:03 PM PST**,...",
@@ -115,7 +115,7 @@ var utils = function (db){
           ],
           timestamp: new Date(),
           footer: {
-            // icon_url: client.user.avatarURL,
+             icon_url: client.user.avatarURL,
             text: "© TimeAlex"
           }
         })
@@ -127,7 +127,7 @@ var utils = function (db){
           // find in moment zone
           let tzList = moment.tz.names()
           result = tzList.filter(function(i){return i.toUpperCase().indexOf(kw.toUpperCase()) > -1})
-          //result = abbrList.filter(function(item){return item[0].toUpperCase().indexOf(kw.toUpperCase()) > -1}).map(function(i){return i[0] + ' ('+ i[1] + ')'})
+          result = abbrList.filter(function(item){return item[0].toUpperCase().indexOf(kw.toUpperCase()) > -1}).map(function(i){return i[0] + ' ('+ i[1] + ')'})
           // if no result find in country
           if (result.length==0){ //try  to get by country
             var result2 = Object.values(countries).find(function(item){
@@ -168,7 +168,7 @@ var utils = function (db){
         return Math.random().toString(36).substr(2); // remove `0.`
       },
       registerTz : function (data, send){
-        // console.log(send('111111'), 11111111)
+         console.log(send('111111'), 11111111)
         var {user, userID, tz, isDM, pmKey} = data
 
         var newData = { _id: userID, tz: tz},

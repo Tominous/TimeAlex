@@ -21,10 +21,10 @@ const timeAlex = {
     var {userID, user, send, isDM} = data;
 
     if (!tz) {
-      // if (isDM)
-      //   return send('Syntax:\r\n ```reg {timezone} [msg on|off]```\r\nEx:\r\n```reg UTC msg on```')
-      // else
-      //   return send('Syntax:\r\n ```@TimeAlexa reg {timezone} [msg on|off]```\r\nEx:\r\n```@TimeAlexa UTC -7 msg on```'.replace(isDM?'@TimeAlexa ':'',''))
+       if (isDM)
+         return send('Syntax:\r\n ```reg {timezone} [msg on|off]```\r\nEx:\r\n```reg UTC msg on```')
+       else
+         return send('Syntax:\r\n ```@TimeAlexa reg {timezone} [msg on|off]```\r\nEx:\r\n```@TimeAlexa UTC -7 msg on```'.replace(isDM?'@TimeAlexa ':'',''))
       return this._info(data).then(()=>{},(data)=>{
         regLink(data).then((token)=>{
           send(`Or click to register: http:\/\/${LINK}/?${token.token}`, userID)
@@ -42,12 +42,12 @@ const timeAlex = {
   }, // end reg
   _info : function (data){
     var {userID, user, send, isDM} = data;
-    // console.log('Info', arguments)
+     console.log('Info', arguments)
 
     var query = { _id: userID}
     return new Promise((resolve, reject) => {
       db.find(query, function (err, docs) {   // Callback is optional
-        // console.log("Found: ", docs)
+         console.log("Found: ", docs)
         if (!err && docs && docs.length > 0){
           var {tz, dmsg} = docs.pop()
           send((isDM?'You':user) + ' has **'+ tz + '** timezone and **React Translate ' + (dmsg?'opt-in':'opt-out')+ "** with me");
@@ -61,11 +61,11 @@ const timeAlex = {
   },
   // process message to find time text
   time : function (data, message){
-    // console.log(arguments)
+     console.log(arguments)
     var items = res.process(message);
 
     if(items.length==0) return
-    // console.log(131313, items);
+     console.log(131313, items);
 
     items = items.map(function(item){
       if (item.abbr){
@@ -75,12 +75,12 @@ const timeAlex = {
     })
 
     var {userID, user, send, d:{mentions, channel_id} } = data;
-    // console.log(121212, mentions, data.evt)
-    // console.log(131313, items); return
+     console.log(121212, mentions, data.evt)
+     console.log(131313, items); return
 
     utils.userTz(userID).then(
       function(tz){
-        // console.log(343434, userID, tz, mentions)
+         console.log(343434, userID, tz, mentions)
         var msg = []
         var fromUserTz = tz.tz
         // answer to channel
@@ -94,7 +94,7 @@ const timeAlex = {
         if (!mentions) return
 
         for (const muser of mentions) {
-          // console.log(muser)
+           console.log(muser)
           // check mentioned user setting option dmsg
           utils.userTz(muser.id).then(
             function(tz){
@@ -112,7 +112,7 @@ const timeAlex = {
             },
             // rejected: remind mentioned users about register a tz
             function(er){
-              // console.log('here')
+               console.log('here')
               var msg = []
               for (const item of items) {
                 msg.push('\"**' + item.key + '**\" is **'+ utils.tzConvert(item, fromUserTz) + '** in **UTC** time')
@@ -129,7 +129,7 @@ const timeAlex = {
               }
             }
         ).catch(function (){
-              //send(data.user + ' has talked about (<#514297100566265869>):\r\n'+  msg.join(' and\r\n'), muser.id)
+              send(data.user + ' has talked about (<#514297100566265869>):\r\n'+  msg.join(' and\r\n'), muser.id)
           })
         }
       },
@@ -154,7 +154,7 @@ const timeAlex = {
     ).catch(function (){})
   },
   find: function(data, kw, arg1, arg2){
-    // console.log(arguments)
+     console.log(arguments)
 
     if (!kw) return
     var page = isNaN(arg1)?(isNaN(arg2)?1:Number.parseInt(arg2)):Number.parseInt(arg1)
@@ -162,7 +162,7 @@ const timeAlex = {
     var result = utils.findTzName(kw, true, country)
     var {send} = data;
 
-    // console.log(result)
+     console.log(result)
     var ipp = 25,
         nextPage = page+1
         length = result.length - (page-1)*ipp
@@ -191,7 +191,7 @@ const timeAlex = {
       if (toTzUid && !isNaN(toTzUid[1])){ // now of mentioned user
         utils.userTz(toTzUid[1]).then(
           function(tz){
-            // console.log(toTzUid[1], bot.users[toTzUid[1]].username)
+             console.log(toTzUid[1], bot.users[toTzUid[1]].username)
             send('<@'+userID+'>: Now is **'+moment.tz(tz&&tz.tz).format(FORMAT)+ '** at **@'+ bot.users[toTzUid[1]].username +'** place')
           },
           function(er){
@@ -224,7 +224,7 @@ const timeAlex = {
     var args = [...arguments].slice(1)
     var {send, userID, isDM, bot} = data;
 
-    //if (args.length == 0 || userID != global.OWNER) return
+    if (args.length == 0 || userID != global.OWNER) return
     var cmd = args.shift()
 
     args = args.map(function(item){return item.replace(/_/g,' ')})
@@ -326,7 +326,7 @@ const timeAlex = {
         var msg = []
         var fromUserTz = tz.tz
         // PM to reacted user
-        // console.log(reactor)
+         console.log(reactor)
         // check reacted user tz
         utils.userTz(reactor.id).then(
           function(tz){
@@ -343,7 +343,7 @@ const timeAlex = {
           },
           // rejected: remind reacted users about register a tz
           function(er){
-            // console.log('here',reactor.id)
+             console.log('here',reactor.id)
 
             // remind
             var newData = Object.assign(data, {userID: reactor.id, user:reactor.user})
@@ -354,7 +354,7 @@ const timeAlex = {
 
           }
         ).catch(function (){
-              //send(data.user + ' has talked about (<#514297100566265869>):\r\n'+  msg.join(' and\r\n'), muser.id)
+              send(data.user + ' has talked about (<#514297100566265869>):\r\n'+  msg.join(' and\r\n'), muser.id)
           })
 
       })
@@ -389,27 +389,27 @@ const timeAlex = {
     }
   },
   mark:(data, message)=>{
-    // console.log('aaaaa', data)
-    // return
+     console.log('aaaaa', data)
+     return
     var {userID, user, send, isDM, bot, d:{channel_id:channelID, id:messageID}} = data;
-    // Object.values(bot.servers).map((item)=>{
-    //   console.log(item)
-    // })
+     Object.values(bot.servers).map((item)=>{
+       console.log(item)
+     })
 
     var allowReaction = ((bot.channels[channelID] &&
                           bot.channels[channelID].permissions.user[global.BOTID] &&
                           bot.channels[channelID].permissions.user[global.BOTID].allow) & 64) == 64
-    // var allowReaction2 = ((bot.channels[channelID] &&
-    //                                             bot.channels[channelID].permissions.user[global.BOTID] &&
-    //                                             bot.channels[channelID].permissions.user[global.BOTID].allow) & 64) == 64
-    //console.log(allowReaction, bot.channels['514297100566265869'].permissions.user['515540575504826368'])
+     var allowReaction2 = ((bot.channels[channelID] &&
+                                                 bot.channels[channelID].permissions.user[global.BOTID] &&
+                                                 bot.channels[channelID].permissions.user[global.BOTID].allow) & 64) == 64
+    console.log(allowReaction, bot.channels['514297100566265869'].permissions.user['515540575504826368'])
     utils.getChannelOption(channelID, allowReaction).then(
       function(reaction){
-        // console.log(90909090, reaction)
+         console.log(90909090, reaction)
         if (reaction){
           var items = res.process(message)
           if (items.length){
-            // console.log('aaaaa',d)
+             console.log('aaaaa',d)
             bot.addReaction({channelID: channelID, messageID: messageID, reaction: '🕰' })
           }
         }
@@ -424,8 +424,8 @@ var utils = {
   timeFormat : '',
   userTz : function(userID, isReaction=false){
 
-    //if (isReaction)
-    //   return new Promise(function(resolve, reject) {resolve(userID)})
+    if (isReaction)
+       return new Promise(function(resolve, reject) {resolve(userID)})
 
     return new Promise(function(resolve, reject) {
       var query = { _id: userID }
@@ -441,13 +441,13 @@ var utils = {
         }
       })
     })
-    //return doc.tz
+    return doc.tz
   },
   tzConvert : function(timeData, fromTz, toTz='UTC', human=true){
     let a = moment.tz(timeData.value, timeData.format, timeData.tz || fromTz)
     a.tz(toTz)
     if (human){
-      //var c = moment.tz(a.format(FORMAT), FORMAT, timeData.tz || fromTz)
+      var c = moment.tz(a.format(FORMAT), FORMAT, timeData.tz || fromTz)
       var trans = (d) =>{
         return d>0?'(next day)':(d<0?'(before day)':'')
       }
@@ -464,7 +464,7 @@ var utils = {
   },
   serverOwner:(channelID, bot)=>{
     var srv = Object.values(bot.servers).find((srv)=>{
-      // console.log(22222222,srv, userID, channelID)
+       console.log(22222222,srv, userID, channelID)
       return (!!srv.channels[channelID])
     })
     return srv && srv.owner_id
@@ -484,10 +484,10 @@ var utils = {
   sendHelp: function(send, bot){
     send({
       color: 3447003,
-      // author: {
-      //   name: client.user.username,
-      //   icon_url: client.user.avatarURL
-      // },
+       author: {
+         name: client.user.username,
+         icon_url: client.user.avatarURL
+       },
       title: "Help for TimeAlexa",
       url: "https://discordbots.org/bot/509269359231893516",
       description: "TimeAlexa will check people's text content and mark up messages have text parts that **considerated a time**\r\n \
@@ -535,7 +535,7 @@ var utils = {
       ],
       timestamp: new Date(),
       footer: {
-        // icon_url: client.user.avatarURL,
+         icon_url: client.user.avatarURL,
         text: "© TimeAlex"
       }
     })
@@ -543,10 +543,10 @@ var utils = {
   sendHelpShort: function(send, bot){
     send({
       color: 3447003,
-      // author: {
-      //   name: client.user.username,
-      //   icon_url: client.user.avatarURL
-      // },
+       author: {
+         name: client.user.username,
+         icon_url: client.user.avatarURL
+       },
       title: "Help for TimeAlexa",
       url: "https://discordbots.org/bot/509269359231893516",
       description: "TimeAlexa help translate time text in context like **2pm** **12:03 PM PST**,...\r\n",
@@ -582,7 +582,7 @@ var utils = {
       ],
       timestamp: new Date(),
       footer: {
-        // icon_url: client.user.avatarURL,
+         icon_url: client.user.avatarURL,
         text: "© TimeAlex"
       }
     })
@@ -593,7 +593,7 @@ var utils = {
       // find in moment zone
       let tzList = moment.tz.names()
       result = tzList.filter(function(i){return i.toUpperCase().indexOf(kw.toUpperCase()) > -1})
-      //result = abbrList.filter(function(item){return item[0].toUpperCase().indexOf(kw.toUpperCase()) > -1}).map(function(i){return i[0] + ' ('+ i[1] + ')'})
+      result = abbrList.filter(function(item){return item[0].toUpperCase().indexOf(kw.toUpperCase()) > -1}).map(function(i){return i[0] + ' ('+ i[1] + ')'})
       // if no result find in country
       if (result.length==0){ //try  to get by country
         var result2 = Object.values(countries).find(function(item){
@@ -675,7 +675,7 @@ var utils = {
     })
   },
   saveChannelOption : function (data){
-    // console.log(send('111111'), 11111111)
+     console.log(send('111111'), 11111111)
     var {channelID, reaction} = data
 
     var newData = { _id: channelID, reaction: reaction}
@@ -736,7 +736,7 @@ var sender = {};
 
 
 const registerTz = function(query, send){
-  // console.log(88888,send)
+   console.log(88888,send)
   return new Promise(
     (resolve, reject) => {
       var tz= query.tz || 'UTC'
@@ -761,7 +761,7 @@ var util = require('util')
 
 const log = function(name, query, send){
   send(global.OWNER)('['+name+'] '+JSON.stringify(query, null, '\t').substr(0,2000))
-  // send(global.OWNER)('['+name+'] ' + util.inspect(query).substr(0,1000))
+   send(global.OWNER)('['+name+'] ' + util.inspect(query).substr(0,1000))
 
 }
 

@@ -55,7 +55,7 @@ bot.on('ready', function (evt) {
   }
 
 
-  // console.log(1111,bot)
+   console.log(1111,bot)
   var server = require('./server').start(sendPM)
 
 });
@@ -69,16 +69,16 @@ bot.on("any", function(event) {
                             bot.channels[channelID].permissions.user[global.BOTID].allow) & 64) == 64
 
       if (event.d.emoji.name == '🕰' && event.d.user_id != BOTID){
-        //getChannelOption(channelID, allowReaction).then(
+        getChannelOption(channelID, allowReaction).then(
         userTz(event.d.user_id).then(
 
           (reaction)=>{
             if (reaction.dmsg) {
-              // console.log(event) //Logs every event
+               console.log(event) //Logs every event
               var {message_id: messageID, user_id: reactUserID, channel_id:channelID} = event.d
 
               bot.getMessage({channelID:channelID, messageID:messageID}, (err, msgObj)=>{
-                // console.log(err, msgObj)
+                 console.log(err, msgObj)
                 var {content:message, author:{id:userID, username:user}, } = msgObj
                 if (reactUserID!=userID && message){
                   var send = function (msg){
@@ -138,10 +138,10 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     cmd = 'help'
     args = []
   }
-  // if(isDM && message.indexOf('>') > -1 ){
-  //   cmd = 'from'
-  //   args = message.split('>').map((item)=> item.trim());
-  // }
+   if(isDM && message.indexOf('>') > -1 ){
+     cmd = 'from'
+     args = message.split('>').map((item)=> item.trim());
+   }
 
   route(cmd, data, args) || route('mark', data, [message])
 

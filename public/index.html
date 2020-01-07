@@ -11,7 +11,7 @@
 		var tz = moment.tz.guess()
 		if (confirm("Do you want to register your timezone ["+ tz +"] with TimeAlexa")){
 			var t = location.search.split('?').pop().split('&')[0]
-			//console.log(location.protocol+'//'+ location.host + '/reg?'+ t + '&' + moment.tz.guess())
+			console.log(location.protocol+'//'+ location.host + '/reg?'+ t + '&' + moment.tz.guess())
 			location.href = location.protocol+'//'+ location.host + '/reg?'+ t + '&' + moment.tz.guess()
 		}
 	}
